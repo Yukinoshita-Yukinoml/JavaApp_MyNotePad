@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="vbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.NotePadController">
+   <children>
+      <MenuBar fx:id="menuBar" prefHeight="0.0" prefWidth="600.0">
+         <menus>
+            <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem fx:id="newItem" mnemonicParsing="false" onAction="#newItemPressed" text="New" />
+                  <MenuItem fx:id="openItem" mnemonicParsing="false" onAction="#openItemPressed" text="Open" />
+                  <MenuItem fx:id="saveItem" mnemonicParsing="false" onAction="#saveItemPressed" text="Save" />
+                  <MenuItem fx:id="saveasItem" mnemonicParsing="false" onAction="#saveasItemPressed" text="Save As" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="pageFormatItem" mnemonicParsing="false" onAction="#pageFormatItemPressed" text="PageFormat" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="exitItem" mnemonicParsing="false" onAction="#exitItemPressed" text="Exit" />
+               </items>
+            </Menu>
+            <Menu fx:id="editMenu" mnemonicParsing="false" text="Edit">
+               <items>
+                  <MenuItem fx:id="cutItem" mnemonicParsing="false" onAction="#cutItemPressed" text="Cut        Ctrl+X" />
+                  <MenuItem fx:id="copyItem" mnemonicParsing="false" onAction="#copyItemPressed" text="Copy      Ctrl+C" />
+                  <MenuItem fx:id="pasteItem" mnemonicParsing="false" onAction="#pasteItemPressed" text="Paste      Ctrl+V" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="undoItem" mnemonicParsing="false" onAction="#undoItemPressed" text="Undo" />
+                  <MenuItem fx:id="redoItem" mnemonicParsing="false" onAction="#redoItemPressed" text="Redo" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="findItem" mnemonicParsing="false" onAction="#findItemPressed" text="Find " />
+                  <MenuItem fx:id="replaceItem" mnemonicParsing="false" onAction="#replaceItemPressed" text="Replace" />
+                  <MenuItem fx:id="replaceAllItem" mnemonicParsing="false" onAction="#replaceAllItemPressed" text="ReplaceAll" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="dateItem" mnemonicParsing="false" onAction="#dateItemPressed" text="Date" />
+               </items>
+            </Menu>
+            <Menu fx:id="styleMenu" mnemonicParsing="false" text="Style">
+               <items>
+                  <MenuItem fx:id="fontItem" mnemonicParsing="false" onAction="#fontItemPressed" text="Font" />
+                  <RadioMenuItem fx:id="wordwrapItem" mnemonicParsing="false" onAction="#wordwrapItemPressed" text="WordWrap" />
+               </items>
+            </Menu>
+            <Menu fx:id="watchMenu" mnemonicParsing="false" text="Watch">
+              <items>
+                  <RadioMenuItem fx:id="statusBarItem" mnemonicParsing="false" onAction="#statusBarItemPressed" text="statusBar" />
+                <MenuItem fx:id="zoomInItem" mnemonicParsing="false" onAction="#zoomInItemPressed" text="ZoomIn" />
+                  <MenuItem fx:id="zoomOutItem" mnemonicParsing="false" onAction="#zoomOutItemPressed" text="ZoomOut" />
+              </items>
+            </Menu>
+            <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
+               <items>
+                  <MenuItem fx:id="aboutItem" mnemonicParsing="false" onAction="#aboutItemPressed" text="About" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <ScrollPane fx:id="scrollPane" prefHeight="370.0" prefWidth="600.0">
+         <content>
+            <TextArea fx:id="textArea" prefHeight="372.0" prefWidth="598.0" />
+         </content>
+      </ScrollPane>
+      <HBox fx:id="hBoxOverall" prefHeight="39.0" prefWidth="600.0">
+         <children>
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Label fx:id="statusLabel" prefHeight="20.0" prefWidth="399.0" text="   " />
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Label fx:id="sysLabel" prefHeight="20.0" prefWidth="138.0" text="  Windows(CRLF)" />
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Label fx:id="charsetLabel" prefHeight="20.0" prefWidth="66.0" text="  UTF-8 " />
+         </children>
+      </HBox>
+   </children>
+</VBox>
