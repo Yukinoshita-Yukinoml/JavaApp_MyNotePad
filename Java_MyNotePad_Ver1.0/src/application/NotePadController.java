@@ -1,7 +1,6 @@
 /* * * * * * * * * * * *
  * Author: Leonard Wang
- * Date: 2021/5/14
- * 
+ * Date: 2021/6/8
  * * * * * * * * * * * */
 package application;
 
@@ -9,8 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.application.Platform;
-//import javafx.beans.value.ChangeListener;
-//import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -53,19 +50,14 @@ import java.awt.GraphicsEnvironment;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
 import java.io.BufferedReader;
-//import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-//import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-//import java.io.IOException;
-//import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-//import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 import javafx.scene.control.Hyperlink;
@@ -151,7 +143,7 @@ public class NotePadController extends RootController implements Initializable {
 			rootNode.setCenter(hBox);
 			
 			Scene scene = new Scene(rootNode,300,150);
-			newStage.setTitle("提示");
+			newStage.setTitle("Tips");
 			newStage.setScene(scene);
 			newStage.show();
 			/*以下才是真正起作用的代码,上面是在布局*/
@@ -184,56 +176,37 @@ public class NotePadController extends RootController implements Initializable {
     @FXML void openItemPressed(ActionEvent event) {
     	//Font.font("宋体", 14);
     	FileChooser fileChooser = new FileChooser(); /*fileChooser打开一个目录*/
-		fileChooser.setTitle("FileChooser-Open"); /*设置文件选择框的标题*/
-		/*过滤文件,仅选择文本文件(.txt)打开*/
-		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT","*.txt"));/*这里"TXT"是有必要的,起码不能是空的,否则会报错*/
-		File file = fileChooser.showOpenDialog(stage); /*打开文件*/
-		
-		//InputStreamReader inputReader = new InputStreamReader(streamIn, StandardCharsets.UTF_8);
-		/*如果文件存在*/
-		if (file != null && file.exists()) { 
-//			try {
-//				/*读取数据 放到textArea中*/
-//				FileInputStream in = new FileInputStream(file); /*用File对象创建文件输入流对象*/
-//				byte[] bs = new byte[(int) file.length()];
-//				in.read(bs);
-//				/*将内容设置到textArea*/
-//				textArea.setText(new String(bs));
-//				in.close();
-//				/*将文件路径 保留到成员变量path中*/
-//				path = file.getPath();
-//				/*更改窗口标题(不同方式)*/
-////				int lastIndex = path.lastIndexOf("\\"); /*查找字符串最后一次出现的位置*/
-////				String title = path.substring(lastIndex + 1); /*从下标lastIndex开始到结束产生一个新的字符串*/
-////				stage.setTitle(title); /*利用新的字符串重新设置窗口的标题*/
-//				stage.setTitle(file.getName());/*调用更简单*/
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-			/*将文件路径 保留到成员变量path中*/
-			path = file.getPath();
-			stage.setTitle(file.getName());
-            BufferedReader br = null;
-            try {
-                /*建立字符流*/
-                InputStreamReader in = new InputStreamReader(new FileInputStream(file), "UTF-8");/*设置编码方式*/
-                br = new BufferedReader(in);
-                /*读取文本内容*/
-                StringBuffer srtingBuffer = new StringBuffer();
-                String content = null;
-                while ((content = br.readLine()) != null) srtingBuffer.append(content).append(System.getProperty("line.separator"));/*换行符*/
-               /*读到textArea中*/
-                textArea.setText(srtingBuffer.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    if (br != null) br.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+	fileChooser.setTitle("FileChooser-Open"); /*设置文件选择框的标题*/
+	/*过滤文件,仅选择文本文件(.txt)打开*/
+	fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT","*.txt"));/*这里"TXT"是有必要的,起码不能是空的,否则会报错*/
+	File file = fileChooser.showOpenDialog(stage); /*打开文件*/
+
+	/*如果文件存在*/
+	if (file != null && file.exists()) { 
+		/*将文件路径 保留到成员变量path中*/
+		path = file.getPath();
+		stage.setTitle(file.getName());
+	    BufferedReader br = null;
+	    try {
+		/*建立字符流*/
+		InputStreamReader in = new InputStreamReader(new FileInputStream(file), "UTF-8");/*设置编码方式*/
+		br = new BufferedReader(in);
+		/*读取文本内容*/
+		StringBuffer srtingBuffer = new StringBuffer();
+		String content = null;
+		while ((content = br.readLine()) != null) srtingBuffer.append(content).append(System.getProperty("line.separator"));/*换行符*/
+	       /*读到textArea中*/
+		textArea.setText(srtingBuffer.toString());
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    } finally {
+		try {
+		    if (br != null) br.close();
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+	    }
+	}
 		
 
     }
@@ -321,7 +294,6 @@ public class NotePadController extends RootController implements Initializable {
      * 粘贴可以视为复制的逆过程
      * 剪切几乎是与复制一样的操作,只是把复制的内容用null代替
      * */
-    
     /*剪切: 实际上只是比复制多了一步把选中的文本替换掉*/
     @FXML void cutItemPressed(ActionEvent event) {
     	/*获取系统剪贴板*/
@@ -388,154 +360,64 @@ public class NotePadController extends RootController implements Initializable {
     	checkHbox.setSpacing(5);
     	checkHbox.getChildren().addAll(label_caseInsensitive, caseInsensitive);/*添加控件*/
 		
-//		/*VBox中放搜索按钮*/
-//		VBox vbox = new VBox();
-//		vbox.setPadding(new Insets(20, 5, 20, 10));
-//		Button findNextButton = new Button("Find Next");
-//		vbox.getChildren().add(findNextButton);/*添加控件*/
-		
-		/*搜索起点*/
-		VBox findRootNode = new VBox();
-		findRootNode.getChildren().addAll(hbox,checkHbox);
-		
-		/*创建findStage搜索框*/
-		Stage findStage = new Stage();
-		Scene scene1 = new Scene(findRootNode, 450, 90);/*显示搜索框*/
-		findStage.setTitle("Find");
-		findStage.setScene(scene1);
-		findStage.setResizable(false); /*固定窗口大小*/
-		findStage.show();
-		/*测试语句: alpha AlPhA aLpHA aLphA ALPHA*/
-		/*如果大小写敏感*/
+	/*搜索起点*/
+	VBox findRootNode = new VBox();
+	findRootNode.getChildren().addAll(hbox,checkHbox);
+
+	/*创建findStage搜索框*/
+	Stage findStage = new Stage();
+	Scene scene1 = new Scene(findRootNode, 450, 90);/*显示搜索框*/
+	findStage.setTitle("Find");
+	findStage.setScene(scene1);
+	findStage.setResizable(false); /*固定窗口大小*/
+	findStage.show();
 		/*处理findNextButton按钮被按动的事件*/
-		findNextButton.setOnAction(e -> {
-//			String textString = textArea.getText(); /*获取记事本的文本域的字符串*/
-//			String tofindString = tofindDomain.getText(); /*获取要查找的字符串*/
-//			if (!tofindString.isEmpty()) {
-//				if (textString.contains(tofindString)) {
-//					/*查找方法*/
-//					/*如果搜索达到了末尾*/
-//					if (startIndex == -1) {
-//						/*弹出警告对话框用于提示没有此信息*/
-//						Alert alert1 = new Alert(AlertType.WARNING);
-//						alert1.titleProperty().set("Tips");
-//						alert1.headerTextProperty().set("The end of the file has been reached, NO More Content!");
-//						alert1.show();
-//					}
-//					startIndex = textArea.getText().indexOf(tofindString,startIndex);
-//					if (startIndex >= 0 && startIndex < textArea.getText().length()) {
-//						textArea.selectRange(startIndex, startIndex + tofindString.length());
-//						startIndex += tofindString.length(); 
-//					}
-//				}
-//				/*如果文本域中不包含要查找的字符串*/
-//				if (textString.contains(tofindString) == false) {
-//					/*弹出警告对话框用于提示没有此信息*/
-//					Alert alert1 = new Alert(AlertType.WARNING);
-//					alert1.titleProperty().set("Tips");
-//					alert1.headerTextProperty().set("No Such Content!");
-//					alert1.show();
-//				}
-//			} 
-//			/*用户没有输入内容时提示错误信息*/
-//			else if (tofindDomain.getText().isEmpty()) {
-//				Alert alert1 = new Alert(AlertType.WARNING);
-//				alert1.titleProperty().set("Wrong!");
-//				alert1.headerTextProperty().set("Yout input in null.");
-//				alert1.show();
-//			}
-//		});
-			
-//		caseInsensitive.setOnAction(checkEvent->{
-			/*如果大小写不敏感*/
-	        if(caseInsensitive.isSelected()) {
-	        	/*处理findNextButton按钮被按动的事件*/
-	    		findNextButton.setOnAction((ActionEvent eventF) -> {
-	    			//System.out.println(textArea.getText());/*测试语句*/
-	    			String textString = textArea.getText().toLowerCase(); /*获取记事本的文本域的字符串*/
-	    			//System.out.println(textString);/*测试语句*/
-	    			String tofindString = tofindDomain.getText().toLowerCase(); /*获取要查找的字符串*/
-	    			if (!tofindDomain.getText().isEmpty()) {/*要查询的字段非空时*/
-	    				//System.out.println(textString.contains(tofindString));/*测试语句*/
-	    				if (textString.contains(tofindString)) {/*当找到要查询的字段时*/
-	    					/*如果搜索达到了末尾*/
-	    					if (startIndex == -1) {
-	    						/*弹出警告对话框用于提示没有此信息*/
-	    						Alert alert1 = new Alert(AlertType.WARNING);
-	    						alert1.titleProperty().set("Tips");
-	    						alert1.headerTextProperty().set("The end of the file has been reached, NO More Content!");
-	    						alert1.show();
-	    					}
-	    					
-	    					startIndex = textArea.getText().indexOf(tofindString,startIndex);/*如果要实现大小写不敏感这句一定要改成从下一处大小不敏感的地方开始*/
-	    					
-	    					if (startIndex >= 0 && startIndex < textArea.getText().length()) {
-	    						textArea.selectRange(startIndex, startIndex + tofindString.length());
-	    						startIndex += tofindString.length(); 
-	    					}
-	    				}
-	    				/*如果文本域中不包含要查找的字符串*/
-	    				else{
-	    					/*弹出警告对话框用于提示没有此信息*/
-	    					Alert alert1 = new Alert(AlertType.WARNING);
-	    					alert1.titleProperty().set("Tips");
-	    					alert1.headerTextProperty().set("No Such Content!");
-	    					alert1.show();
-	    				}
-	    			} 
-	    			/*用户没有输入内容时提示错误信息*/
-	    			else if (tofindDomain.getText().isEmpty()) {
-	    				Alert alert1 = new Alert(AlertType.WARNING);
-	    				alert1.titleProperty().set("Wrong!");
-	    				alert1.headerTextProperty().set("Yout input in null.");
-	    				alert1.show();
-	    			}
-	    		});
-	        }else if(caseInsensitive.isSelected() == false){
-	    		/*如果大小写敏感*/
-	    		/*处理findNextButton按钮被按动的事件*/
-	    		findNextButton.setOnAction((ActionEvent eventF) -> {
-	    			//System.out.println(textArea.getText());/*测试语句*/
-	    			String textString = textArea.getText(); /*获取记事本的文本域的字符串*/
-	    			//System.out.println(textString);/*测试语句*/
-	    			String tofindString = tofindDomain.getText(); /*获取要查找的字符串*/
-	    			if (!tofindString.isEmpty()) {
-	    				if (textString.contains(tofindString)) {
-	    					/*查找方法*/
-	    					/*如果搜索达到了末尾*/
-	    					if (startIndex == -1) {
-	    						/*弹出警告对话框用于提示没有此信息*/
-	    						Alert alert1 = new Alert(AlertType.WARNING);
-	    						alert1.titleProperty().set("Tips");
-	    						alert1.headerTextProperty().set("The end of the file has been reached, NO More Content!");
-	    						alert1.show();
-	    					}
-	    					startIndex = textArea.getText().indexOf(tofindString,startIndex);
-	    					if (startIndex >= 0 && startIndex < textArea.getText().length()) {
-	    						textArea.selectRange(startIndex, startIndex + tofindString.length());
-	    						startIndex += tofindString.length(); 
-	    					}
-	    				}
-	    				/*如果文本域中不包含要查找的字符串*/
-	    				if (textString.contains(tofindString) == false) {
-	    					/*弹出警告对话框用于提示没有此信息*/
-	    					Alert alert1 = new Alert(AlertType.WARNING);
-	    					alert1.titleProperty().set("Tips");
-	    					alert1.headerTextProperty().set("No Such Content!");
-	    					alert1.show();
-	    				}
-	    			} 
-	    			/*用户没有输入内容时提示错误信息*/
-	    			else if (tofindDomain.getText().isEmpty()) {
-	    				Alert alert1 = new Alert(AlertType.WARNING);
-	    				alert1.titleProperty().set("Wrong!");
-	    				alert1.headerTextProperty().set("Yout input in null.");
-	    				alert1.show();
-	    			}
-	    		});
-	        }
-	    });
-   }
+		findNextButton.setOnAction((ActionEvent eventF) -> {
+			//System.out.println(textArea.getText());/*测试语句*/
+			String textString = textArea.getText(); /*获取记事本的文本域的字符串*/
+			//System.out.println(textString);/*测试语句*/
+			String tofindString = tofindDomain.getText(); /*获取要查找的字符串*/
+		if(caseInsensitive.isSelected()) {/*如果大小写不敏感*/
+				//System.out.println(textArea.getText());/*测试语句*/
+				textString = textArea.getText().toLowerCase(); /*获取记事本的文本域的字符串*/
+				//System.out.println(textString);/*测试语句*/
+				tofindString = tofindDomain.getText().toLowerCase(); /*获取要查找的字符串*/
+		}/*如果敏感就不toLowerCase()*/
+			if (!tofindDomain.getText().isEmpty()) {/*要查询的字段非空时*/
+				//System.out.println(textString.contains(tofindString));/*测试语句*/
+				if (textString.contains(tofindString)) {/*当找到要查询的字段时*/
+					/*如果搜索达到了末尾*/
+					if (startIndex == -1) {
+						/*弹出警告对话框用于提示没有此信息*/
+						Alert alert1 = new Alert(AlertType.WARNING);
+						alert1.titleProperty().set("Tips");
+						alert1.headerTextProperty().set("The end of the file has been reached, NO More Content!");
+						alert1.show();
+					}
+					startIndex = textString.indexOf(tofindString,startIndex);/*如果要实现大小写不敏感这句一定要改成从下一处大小不敏感的地方开始*/
+					if (startIndex >= 0 && startIndex < textArea.getText().length()) {
+						textArea.selectRange(startIndex, startIndex + tofindString.length());
+						startIndex += tofindString.length(); 
+					}
+				}
+				/*如果文本域中不包含要查找的字符串*/
+				else{
+					/*弹出警告对话框用于提示没有此信息*/
+					Alert alert1 = new Alert(AlertType.WARNING);
+					alert1.titleProperty().set("Tips");
+					alert1.headerTextProperty().set("No Such Content!");
+					alert1.show();
+				}
+			} 
+			/*用户没有输入内容时提示错误信息*/
+			else if (tofindDomain.getText().isEmpty()) {
+				Alert alert1 = new Alert(AlertType.WARNING);
+				alert1.titleProperty().set("Wrong!");
+				alert1.headerTextProperty().set("Yout input in null.");
+				alert1.show();
+			}
+		});
+	    }
  
     /*向前搜索*/
     @FXML void findPreItemPressed(ActionEvent event) {
@@ -634,6 +516,12 @@ public class NotePadController extends RootController implements Initializable {
     
     /*替换全部*/
     @FXML void replaceAllItemPressed() {
+    	Label label_caseInsensitive = new Label("CaseInsensitive");
+    	CheckBox caseInsensitive = new CheckBox();
+    	HBox checkHbox = new HBox();
+    	checkHbox.setPadding(new Insets(5, 5, 5, 5));
+    	checkHbox.setSpacing(5);
+    	checkHbox.getChildren().addAll(label_caseInsensitive, caseInsensitive);/*添加控件*/
     	/*依然是创建VBox和HBox,用于存放所需的组件*/
     	HBox findHbox = new HBox();
     	findHbox.setPadding(new Insets(20, 5, 10, 8));
@@ -650,7 +538,7 @@ public class NotePadController extends RootController implements Initializable {
 		replaceHbox.getChildren().addAll(label2, toreplaceDomain);
 		
 		VBox v1 = new VBox();
-		v1.getChildren().addAll(findHbox, replaceHbox);
+		v1.getChildren().addAll(findHbox, replaceHbox,checkHbox);
 
 		VBox v2 = new VBox();
 		v2.setPadding(new Insets(21, 5, 20, 10));
@@ -659,7 +547,7 @@ public class NotePadController extends RootController implements Initializable {
 		Button replaceButton = new Button("Replace");
 		Button replaceAllButton = new Button("Replace ALL");
 		v2.getChildren().addAll(findButton, replaceButton,replaceAllButton);
-
+	
 		HBox replaceRootNode = new HBox();
 		replaceRootNode.getChildren().addAll(v1, v2);
 
@@ -674,9 +562,9 @@ public class NotePadController extends RootController implements Initializable {
 			String textString = textArea.getText(); /*获取记事本文本域的字符串*/
 			String tofindString = tofindDomain.getText(); /*获取查找内容的字符串*/
 			String toreplaceString = toreplaceDomain.getText();/*获取要替换的串*/
-			if (!tofindDomain.getText().isEmpty()) {
-				if (textString.contains(tofindString)) {
-					/*没找到*/
+			if (!tofindDomain.getText().isEmpty()) {	
+				if(caseInsensitive.isSelected()) {
+				if (textString.toLowerCase().contains(tofindString.toLowerCase())) {/*没有更多的时候*/
 					if (startIndex == -1) {
 						Alert alert1 = new Alert(AlertType.WARNING);
 						alert1.titleProperty().set("Tips");
@@ -707,59 +595,77 @@ public class NotePadController extends RootController implements Initializable {
 					});
 					/*替换全部*/
 					replaceAllButton.setOnAction((ActionEvent e3)->{
-				        textArea.positionCaret(0); // 将光标放到编辑区开头
-				        int last = 0, len = 0, replaceCount = 0;/*last用于表示还有无要替换的数量,replaceCount存放替换了多少*/
-				        while (last > -1) {
-				        	int FindStartPos = textArea.getCaretPosition();
-				            if (textArea.getSelectedText() == null) {
-				                last = textString.indexOf(tofindString, FindStartPos);
-				            } else {
-				                last = textString.indexOf(tofindString, FindStartPos - tofindString.length() + 1);
-				            }
-				            if (last > -1) {
-				                textArea.positionCaret(last);
-				                len = tofindString.length();
-				                textArea.selectRange(last, last + len);
-				            } else {
-				                if (replaceCount == 0) {/*如果没有替换*/
-									Alert alert = new Alert(AlertType.WARNING);
-									alert.titleProperty().set("Wrong");
-									alert.headerTextProperty().set("Replace Content is NULL!");
-									alert.show();
-				                } else {
-				                    Alert alert = new Alert(Alert.AlertType.INFORMATION); /*查找成功提示信息*/
-				                    alert.setTitle("ReplaceALL");
-				                    alert.setHeaderText("Result");
-				                    alert.setContentText("Replaced Successfully! " + replaceCount + " places has been replaced!");
-				                    alert.showAndWait(); 
-				                }
-				            }
-				            if (toreplaceString.length() == 0 && textArea.getSelectedText() != null) {
-				                textArea.replaceSelection("");
-				                replaceCount++;
-				            }
-				            if (toreplaceString.length() > 0 && textArea.getSelectedText() != null) {
-				                textArea.replaceSelection(toreplaceString);
-				                replaceCount++;
-				            }
-				        }
-					});
-					
-				}
-				if (!textString.contains(tofindString)) {
+						if(caseInsensitive.isSelected())
+							textArea.setText(textArea.getText().toLowerCase().replaceAll(tofindString,toreplaceString));
+						else
+							textArea.setText(textArea.getText().replaceAll(tofindString,toreplaceString));
+					});	
+				}}/*选中大小写不敏感时候*/
+			else {
+				if (textString.contains(tofindString)) {/*没有更多的时候*/
+				if (startIndex == -1) {
 					Alert alert1 = new Alert(AlertType.WARNING);
 					alert1.titleProperty().set("Tips");
-					alert1.headerTextProperty().set("Cannot find the content");
+					alert1.headerTextProperty().set("The end of the file has been reached, NO More Content!");
 					alert1.show();
 				}
-				
+				startIndex = textArea.getText().indexOf(tofindString,startIndex);/*得到find结果的开始位置*/
+				if (startIndex >= 0 && startIndex < textArea.getText().length()) {/*如果该位置合法*/
+					textArea.selectRange(startIndex, startIndex + tofindString.length());/*确定选中范围为要求的文本长度*/
+					startIndex += tofindString.length(); /*并将位置跳到已经走过的文本之后*/
+				}
+				replaceButton.setOnAction((ActionEvent e2) -> {
+					 /*替换内容为空提示对话框*/
+					if(toreplaceDomain.getText().isEmpty()) { 
+						Alert alert1 = new Alert(AlertType.WARNING);
+						alert1.titleProperty().set("Wrong");
+						alert1.headerTextProperty().set("Replace Content is NULL!");
+						alert1.show();
+					}
+					/*替换内容不为空则替换*/
+					else {
+						/* 直接替换的化会造成第一次替换后如果不继续find而是继续点击replace会直接插入的bug
+						 * 解决方法就是设置条件判断: 只有选中的区域大小等于查找域的大小才替换
+						 * */
+						if(textArea.getSelection().getLength() == tofindString.length())
+							textArea.replaceSelection(toreplaceString);
+					}
+				});
+				/*替换全部*/
+				replaceAllButton.setOnAction((ActionEvent e3)->{
+					if(caseInsensitive.isSelected())
+						textArea.setText(textArea.getText().toLowerCase().replaceAll(tofindString,toreplaceString));
+					else
+						textArea.setText(textArea.getText().replaceAll(tofindString,toreplaceString));
+				});	
+			}	/*这是查找到的时候*/
+				if(caseInsensitive.isSelected()) {
+					if (!textString.toLowerCase().contains(tofindString)) {
+						Alert alert1 = new Alert(AlertType.WARNING);
+						alert1.titleProperty().set("Tips");
+						alert1.headerTextProperty().set("Cannot find the content");
+						alert1.show();
+					}else if (tofindDomain.getText().isEmpty()) {
+						Alert alert1 = new Alert(AlertType.WARNING);
+						alert1.titleProperty().set("WRONG");
+						alert1.headerTextProperty().set("Your input in the find TextField is NULL!");
+						alert1.show();
+					}
+				}else {
+					if (!textString.contains(tofindString)) {
+						Alert alert1 = new Alert(AlertType.WARNING);
+						alert1.titleProperty().set("Tips");
+						alert1.headerTextProperty().set("Cannot find the content");
+						alert1.show();
+					}else if (tofindDomain.getText().isEmpty()) {
+						Alert alert1 = new Alert(AlertType.WARNING);
+						alert1.titleProperty().set("WRONG");
+						alert1.headerTextProperty().set("Your input in the find TextField is NULL!");
+						alert1.show();
+					}
+				}	
 			} 
-			else if (tofindDomain.getText().isEmpty()) {
-				Alert alert1 = new Alert(AlertType.WARNING);
-				alert1.titleProperty().set("WRONG");
-				alert1.headerTextProperty().set("Your input in the find TextField is NULL!");
-				alert1.show();
-			}
+		  }
 		});  	
     }
     
@@ -845,29 +751,17 @@ public class NotePadController extends RootController implements Initializable {
     @FXML void fontItemPressed(ActionEvent event) {
     	++flag;//System.out.println(flag);/*测试输出语句*/
     	vb[flag] = new VBox();/*初始化当前VBox*/
-    	//textArea.setStyle("-fx-background-color:balck");
-
+	    
     	//创建Label以便输出到界面
     	Label label1 = new Label("Font Name");  Label label2 = new Label("Font Size"); Label label3 = new Label("Font Color");
     	Label label_ckb1 = new Label("Bold"); Label label_ckb2 = new Label("Italic");
     	/*ge:代表此电脑上的所有字体的对象*/
     	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    	if(flag > 1) {
-    		h1.getChildren().clear();/*直接clear掉效率更高*/
-//    		h1.getChildren().remove(label1); h1.getChildren().remove(label2); h1.getChildren().remove(label3);
-//    		h1.getChildren().remove(cb1); h1.getChildren().remove(cb2); h1.getChildren().remove(cb3);
-    	}/*第二次后先移除*/
+    	if(flag > 1) h1.getChildren().clear();/*直接clear掉效率更高*/
         h1.getChildren().addAll(label1, cb1,label2, cb2, label3, cb3);/*ComboBox包含在HBox1中*/
         h1.setSpacing(10);/*设置间隙: hbox，vbox用这个 对比 GirdPane用setHgap，setVgap;*/
-	    //cb1.setPromptText("Font");
-	    //cb2.setPromptText("Size");
-	    //cb3.setPromptText("Color");/*应该在每个组件的对应位置给ComboBox设置prompt内容*/
 	    
-	    if(flag > 1) { 
-	    	h2.getChildren().clear();
-//	    	h2.getChildren().remove(label_ckb1); h2.getChildren().remove(label_ckb2);
-//	    	h2.getChildren().remove(ckb1); h2.getChildren().remove(ckb2);
-	    }/*第二次后先移除*/
+	    if(flag > 1) h2.getChildren().clear();/*第二次后先移除*/
 	    h2.getChildren().addAll(ckb1,label_ckb1,ckb2,label_ckb2);/*把两个CheckBox包含到HBox2中去*/
 	    h2.setAlignment(Pos.CENTER);/*把两个CheckBox设置到中间*/
 	    
@@ -888,8 +782,6 @@ public class NotePadController extends RootController implements Initializable {
 	    if(flag > 1) cb2.getItems().clear();
 	    cb2.setPromptText("Size");
 	    cb2.getItems().addAll(getFontSize);/*把这些Size放到ComboBox2中*/
-	    //String[] getFontColor = new String[5];/*提供黑色 红色 蓝色 黄色和粉色*/
-	    //String[] getFontColor = {"-fx-text-fill:black", "-fx-text-fill:red", "-fx-text-fill:blue", "-fx-text-fill:yellow", "-fx-text-fill:pink"};
 	    /*向ComboBox中添加五个备选项*/
 	    if(flag > 1) cb3.getItems().clear();
 	    cb3.setPromptText("Color");
@@ -908,20 +800,7 @@ public class NotePadController extends RootController implements Initializable {
 	        setFont();
 	    });
 	    cb3.setOnAction(e->{/*设置颜色时可能出现的问题帮助: docs.oracle.com/javase/8/javafx/api/javafx/scene/doc-files/cssref.html#intropublicapi*/
-//	    	cb3.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-//				public void changed(ObservableValue ov,
-//						Number old_value,Number new_value) {
-//					/*测试语句*/
-//					System.out.println(new_value);
-//					selectFontColor = getFontColor[new_value.intValue()];//System.out.println(new_value.intValue());//打印你所选的选项的位置
-//				}
-//			});
 	    	selectFontColor = "-fx-text-fill:"+cb3.getValue();/*尝试直接赋值,避免另设setFontColor*/
-//	    	if(cb3.getValue() == "BLACK") selectFontColor = getFontColor[0];
-//	    	if(cb3.getValue() == "RED") selectFontColor = getFontColor[1];
-//	    	if(cb3.getValue() == "BLUE") selectFontColor = getFontColor[2];
-//	    	if(cb3.getValue() == "YELLOW") selectFontColor = getFontColor[3];
-//	    	if(cb3.getValue() == "PINK") selectFontColor = getFontColor[4];
 	    	//System.out.println(cb3.getValue());/*测试语句*/
 	        setFont();
 	    });
@@ -1053,7 +932,6 @@ public class NotePadController extends RootController implements Initializable {
     	Alert alert = new Alert(AlertType.INFORMATION);
     	alert.setTitle("About MyNotepad");
     	alert.setHeaderText("About");   	
-
 		/*定义Label,Text和HyperLink用于输出*/
     	Label label = new Label("Information about MyNotePad application. \n");
     	Text foretips =  new Text("\n If you want to know more about my app,\n"
@@ -1144,7 +1022,6 @@ public class NotePadController extends RootController implements Initializable {
         textArea.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-//            	statusBar();
                 /*监听文本变化*/
                 if (!textArea.isUndoable()){
                     undoItem.setDisable(true);
@@ -1209,8 +1086,6 @@ public class NotePadController extends RootController implements Initializable {
 	public boolean isTextAreaEmpty() {return textArea.getText().isEmpty();}
 	/*获取当前是否选中文本状态,默认为选中,即true*/
 	public boolean isTextAreaSelected() {
-		//if(textArea.getLength() == 0) return false;/*这句话有问题*/
-		/*正确写法应该为*/
 		if(textArea.getSelectedText().equals("")) return false;
 		return true;
 	}
